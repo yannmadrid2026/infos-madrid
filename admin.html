@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#b8322a">
+<title>Réponses Madrid · Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Figtree:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#eef1f5; --sheet:#ffffff; --fg:#17202e; --muted:#5b6678; --line:#d6dce5;
+  --accent:#b8322a; --accent-fg:#ffffff; --accent-soft:#f6e3e1; --ok:#1f7a4d; --ok-soft:#e1f2e8; --warn:#8a5a00; --warn-soft:#fbefd5;
+  --display:"Bricolage Grotesque","Avenir Next",system-ui,sans-serif;
+  --body:"Figtree",-apple-system,"Segoe UI",system-ui,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root{
+  --bg:#10141b; --sheet:#1a202a; --fg:#e9edf3; --muted:#9aa5b6; --line:#2d3644;
+  --accent:#e2675c; --accent-fg:#1a0c0a; --accent-soft:#3a1f1d; --ok:#5cc792; --ok-soft:#173326; --warn:#e6b55a; --warn-soft:#3a2d14; color-scheme:dark}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.5;
+  padding:env(safe-area-inset-top,0) env(safe-area-inset-right,0) env(safe-area-inset-bottom,0) env(safe-area-inset-left,0)}
+.wrap{max-width:1100px;margin:0 auto;padding:24px 16px 48px;display:flex;flex-direction:column;gap:18px}
+h1{font-family:var(--display);margin:0;line-height:1.1;font-size:clamp(1.6rem,6vw,2.2rem);font-weight:700;text-wrap:balance}
+.sub{margin:0;color:var(--muted)}
+.box{background:var(--sheet);border:1px solid var(--line);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:14px}
+.login{max-width:420px}
+label{font-weight:600;font-size:.95rem}
+input,select{width:100%;font:16px var(--body);color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px;min-height:48px;-webkit-appearance:none;appearance:none}
+select{background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 18px) 50%,calc(100% - 13px) 50%;background-size:5px 5px;background-repeat:no-repeat;padding-right:36px}
+input:focus,select:focus,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn{border:0;border-radius:10px;padding:12px 16px;font:600 .95rem var(--body);cursor:pointer;background:var(--accent);color:var(--accent-fg);min-height:46px;white-space:nowrap}
+.btn.ghost{background:transparent;color:var(--fg);border:1px solid var(--line)}
+.btn:disabled{opacity:.55;cursor:default}
+.note{border-radius:10px;padding:12px 14px;font-size:.95rem}
+.note.ok{background:var(--ok-soft);color:var(--ok)}
+.note.warn{background:var(--warn-soft);color:var(--warn)}
+.top{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;justify-content:space-between}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.kpi{background:var(--sheet);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:6px}
+.kpi .n{font-family:var(--display);font-weight:700;font-size:1.9rem;line-height:1;font-variant-numeric:tabular-nums}
+.kpi .l{font-size:.85rem;color:var(--muted)}
+.pills{display:flex;flex-wrap:wrap;gap:6px}
+.pill{font-size:.78rem;font-weight:600;border-radius:999px;padding:3px 9px;background:var(--bg);border:1px solid var(--line);font-variant-numeric:tabular-nums}
+.filters{display:grid;grid-template-columns:2fr 1fr;gap:10px}
+@media (max-width:560px){.filters{grid-template-columns:1fr}}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--sheet)}
+table{border-collapse:collapse;width:100%;font-size:.9rem;min-width:1000px}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);background:var(--bg);position:sticky;top:0}
+td{white-space:pre-wrap;overflow-wrap:break-word;min-width:90px}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+tr:last-child td{border-bottom:0}
+.cards{display:none;flex-direction:column;gap:10px}
+.card{background:var(--sheet);border:1px solid var(--line);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:6px}
+.card h3{margin:0;font:700 1.05rem var(--display)}
+.card dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:.92rem}
+.card dt{color:var(--muted)} .card dd{margin:0;overflow-wrap:anywhere;white-space:pre-wrap}
+@media (max-width:700px){.tablewrap{display:none}.cards{display:flex}}
+.app{display:flex;flex-direction:column;gap:18px}
+[hidden]{display:none!important}
+.empty{color:var(--muted);text-align:center;padding:24px 8px;margin:0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Réponses : voyage Madrid</h1>
+    <p class="sub">Espace réservé à l'organisatrice.</p>
+  </header>
+
+  <form class="box login" id="login">
+    <label for="pwd">Mot de passe administrateur</label>
+    <input type="password" id="pwd" autocomplete="current-password">
+    <div id="loginMsg" class="note warn" hidden></div>
+    <button class="btn" id="loginBtn" type="submit">Se connecter</button>
+  </form>
+
+  <main id="app" class="app" hidden>
+    <div class="top">
+      <p class="sub" id="maj"></p>
+      <div class="actions">
+        <button class="btn" type="button" id="excel">Télécharger en Excel</button>
+        <button class="btn ghost" type="button" id="refresh">Actualiser</button>
+        <button class="btn ghost" type="button" id="logout">Se déconnecter</button>
+      </div>
+    </div>
+    <div class="kpis" id="kpis"></div>
+    <div class="filters">
+      <input type="search" id="q" placeholder="Rechercher un nom, un commentaire…" aria-label="Rechercher">
+      <select id="fEvt" aria-label="Filtrer par événement">
+        <option value="">Tous les événements</option>
+        <option>Séminaire international</option>
+        <option>Formation management</option>
+      </select>
+    </div>
+    <div id="appMsg" class="note" hidden></div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Nom</th><th>Prénom</th><th>Événement</th><th>Régime</th><th>Commentaire</th><th>Arrivée</th><th>Lieu de RDV</th><th>Commentaires</th><th>Mis à jour</th></tr></thead>
+      <tbody id="tbody"></tbody>
+    </table></div>
+    <div class="cards" id="cards"></div>
+  </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+/* =====================================================================
+   À MODIFIER : la même URL d'application Web que dans index.html (/exec)
+   ===================================================================== */
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxXv4cIg32oXSBlZaXId09vfMfeNV-cUK6U0_gCmEdB647VV5eGHjTHlHhCiZyfdUPP/exec";
+
+const $ = id => document.getElementById(id);
+const KEY = "infos-madrid-admin";
+let rows = [], pwd = "";
+
+function note(el,text,kind){ el.textContent=text; el.className="note "+(kind||""); el.hidden=!text; }
+function getPwd(){ try{ return sessionStorage.getItem(KEY)||""; }catch{ return ""; } }
+function setPwd(v){ try{ v?sessionStorage.setItem(KEY,v):sessionStorage.removeItem(KEY); }catch{} }
+
+async function fetchRows(p){
+  const res = await fetch(SCRIPT_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({action:"liste",motDePasse:p})});
+  return res.json();
+}
+
+async function connect(p, silent){
+  if(SCRIPT_URL.startsWith("COLLER")){ note($("loginMsg"),"L'URL de l'application Web n'est pas encore renseignée dans admin.html.","warn"); return; }
+  const b=$("loginBtn"); b.disabled=true; b.textContent="Connexion…";
+  try{
+    const out = await fetchRows(p);
+    if(!out.ok){ setPwd(""); if(!silent) note($("loginMsg"), out.error==="mot_de_passe" ? "Mot de passe incorrect." : "Erreur : "+out.error, "warn"); return; }
+    pwd=p; setPwd(p); rows=out.reponses||[];
+    $("login").hidden=true; $("app").hidden=false; render(); stamp();
+  }catch(e){ if(!silent) note($("loginMsg"),"Connexion impossible. Vérifiez votre connexion internet.","warn"); }
+  finally{ b.disabled=false; b.textContent="Se connecter"; }
+}
+
+function stamp(){ $("maj").textContent = rows.length+" réponse(s) · actualisé à "+new Date().toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"}); }
+
+function filtered(){
+  const q=$("q").value.trim().toLowerCase(), ev=$("fEvt").value;
+  return rows.filter(r=>(!ev||r.evenement===ev) && (!q || Object.values(r).join(" ").toLowerCase().includes(q)))
+    .sort((a,b)=>(a.nom||"").localeCompare(b.nom||"","fr")||(a.prenom||"").localeCompare(b.prenom||"","fr"));
+}
+
+function count(list,key){ const t={}; list.forEach(r=>{ if(r[key]) t[r[key]]=(t[r[key]]||0)+1; }); return t; }
+function kpi(n,label,tally){
+  const d=document.createElement("div"); d.className="kpi";
+  const a=document.createElement("div"); a.className="n"; a.textContent=n;
+  const b=document.createElement("div"); b.className="l"; b.textContent=label; d.append(a,b);
+  if(tally){ const p=document.createElement("div"); p.className="pills";
+    Object.entries(tally).forEach(([k,v])=>{ const s=document.createElement("span"); s.className="pill"; s.textContent=k+" · "+v; p.append(s); }); d.append(p); }
+  return d;
+}
+
+function render(){
+  const list=filtered();
+  $("kpis").replaceChildren(
+    kpi(list.length,"Participants",count(list,"evenement")),
+    kpi(list.filter(r=>r.regime&&r.regime!=="Classique").length,"Régimes particuliers",count(list,"regime")),
+    kpi(list.filter(r=>r.lieu==="Aéroport").length,"RDV à l'aéroport",count(list,"lieu"))
+  );
+  const tb=$("tbody"), cards=$("cards");
+  if(!list.length){
+    tb.innerHTML='<tr><td colspan="9" class="empty">Aucune réponse pour le moment.</td></tr>';
+    cards.innerHTML='<p class="empty">Aucune réponse pour le moment.</p>'; return;
+  }
+  tb.replaceChildren(...list.map(r=>{
+    const tr=document.createElement("tr");
+    const evt=[r.evenement,r.evenementCommentaire].filter(Boolean).join("\n");
+    [r.nom,r.prenom,evt,r.regime,r.commentaire,[r.date,r.heure].filter(Boolean).join(" · "),r.lieu,r.commentaires,r.majLe].forEach((v,i)=>{
+      const td=document.createElement("td"); td.textContent=v||""; if(i===5||i===8) td.className="num"; tr.append(td); });
+    return tr;
+  }));
+  cards.replaceChildren(...list.map(r=>{
+    const c=document.createElement("article"); c.className="card";
+    const h=document.createElement("h3"); h.textContent=((r.prenom||"")+" "+(r.nom||"")).trim(); c.append(h);
+    const dl=document.createElement("dl");
+    [["Événement",[r.evenement,r.evenementCommentaire].filter(Boolean).join(" – ")],["Régime",r.regime],["Commentaire",r.commentaire],
+     ["Arrivée",[r.date,r.heure].filter(Boolean).join(" à ")],["Lieu de RDV",r.lieu],["Commentaires",r.commentaires],["Mis à jour",r.majLe]]
+     .forEach(([k,v])=>{ if(!v) return; const dt=document.createElement("dt"); dt.textContent=k; const dd=document.createElement("dd"); dd.textContent=v; dl.append(dt,dd); });
+    c.append(dl); return c;
+  }));
+}
+
+$("login").addEventListener("submit",e=>{ e.preventDefault(); note($("loginMsg"),""); connect($("pwd").value,false); });
+$("q").addEventListener("input",render);
+$("fEvt").addEventListener("change",render);
+$("refresh").onclick=async()=>{
+  const b=$("refresh"); b.disabled=true;
+  try{ const out=await fetchRows(pwd); if(out.ok){ rows=out.reponses||[]; render(); stamp(); note($("appMsg"),""); } else note($("appMsg"),"Session expirée : reconnectez-vous.","warn"); }
+  catch{ note($("appMsg"),"Actualisation impossible. Vérifiez votre connexion internet.","warn"); }
+  finally{ b.disabled=false; }
+};
+$("logout").onclick=()=>{ setPwd(""); pwd=""; rows=[]; $("app").hidden=true; $("login").hidden=false; $("pwd").value=""; };
+
+$("excel").onclick=()=>{
+  if(!window.XLSX){ note($("appMsg"),"Le module Excel n'a pas pu se charger. Rechargez la page.","warn"); return; }
+  const list=filtered();
+  const toDate=s=>{ const m=/^(\d{2})\/(\d{2})\/(\d{4})$/.exec(s||""); return m?new Date(Date.UTC(+m[3],+m[2]-1,+m[1])):(s||""); };
+  const toTime=s=>{ const m=/^(\d{1,2}):(\d{2})$/.exec(s||""); return m?(+m[1]*60+ +m[2])/1440:(s||""); };
+  const evts=[...new Set(list.map(r=>r.evenement).filter(Boolean))].join(", ");
+  const aoa=[
+    ["Événement",evts,"Commentaire",""],
+    ["Nom","Prénom","Régime alimentaire particulier","Commentaire","Date d'arrivée","Heure d'arrivée","Lieu de RDV","Commentaires","Commentaire événement","Dernière mise à jour"],
+    ...list.map(r=>[r.nom,r.prenom,r.regime,r.commentaire,toDate(r.date),toTime(r.heure),r.lieu,r.commentaires,r.evenementCommentaire,r.majLe])
+  ];
+  const ws=XLSX.utils.aoa_to_sheet(aoa,{cellDates:true});
+  for(let i=0;i<list.length;i++){
+    const d=ws[XLSX.utils.encode_cell({r:i+2,c:4})]; if(d&&d.t==="d") d.z="dd/mm/yyyy";
+    const t=ws[XLSX.utils.encode_cell({r:i+2,c:5})]; if(t&&t.t==="n") t.z="hh:mm";
+  }
+  ws["!cols"]=[18,18,28,40,16,16,26,40,28,20].map(w=>({wch:w}));
+  ws["!merges"]=[{s:{r:0,c:3},e:{r:0,c:9}}];
+  const wb=XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb,ws,"Réponses");
+  const d=new Date(), stampStr=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+  XLSX.writeFile(wb,"MSC_A_Informations_"+stampStr+".xlsx");
+};
+
+// Reconnexion automatique pendant la session du navigateur
+const saved=getPwd(); if(saved) connect(saved,true);
+</script>
+</body>
+</html>
